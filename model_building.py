@@ -79,7 +79,7 @@ df_err[df_err.error == max(df_err.error)]
 # Random Forest
 from sklearn.ensemble import RandomForestRegressor
 
-rf = RandomForestRegressor()
+rf = RandomForestRegressor(random_state = 42)
 
 np.mean(cross_val_score(rf, X_train, y_train, scoring = 'neg_mean_absolute_error', cv=3))
 
@@ -112,3 +112,16 @@ mean_absolute_error(y_test, tpred_lml)
 mean_absolute_error(y_test, tpred_rf)
 
 mean_absolute_error(y_test, (tpred_lm + tpred_rf) / 2)
+
+print(gs.best_estimator_)
+
+import pickle
+regressor = gs.best_estimator_
+pickle.dump(regressor, open("model.pkl", "wb"))
+
+filename = 'model.pkl'
+model = pickle.load(open('model.pkl','rb'))
+
+model.predict(X_test.iloc[1,:].values.reshape(1, -1))
+
+list(X_test.iloc[1,:])
